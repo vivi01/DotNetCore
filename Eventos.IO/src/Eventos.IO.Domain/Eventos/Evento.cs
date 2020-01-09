@@ -1,9 +1,10 @@
 ﻿using Eventos.IO.Domain.Core.Models;
+using Eventos.IO.Domain.Organizadores;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
 
-namespace Eventos.IO.Domain.Models
+namespace Eventos.IO.Domain.Eventos
 {
 	public class Evento : Entity<Evento>
 	{
@@ -26,6 +27,9 @@ namespace Eventos.IO.Domain.Models
 			NomeEmpresa = nomeEmpresa;
 
 		}
+
+		private Evento() { }
+
 		public string Nome { get; private set; }
 
 		public string DescricaoCurta { get; private set; }
@@ -75,8 +79,10 @@ namespace Eventos.IO.Domain.Models
 		private void ValidarNome()
 		{
 			RuleFor(e => e.Nome)
-				.NotEmpty().WithMessage("O nome do evento deve ser fornecido.")
-				.Length(2, 150).WithMessage("O nome do evento deve ter entre 2 e 150 caracteres.");
+				.NotEmpty()
+				.WithMessage("O nome do evento deve ser fornecido.")
+				.Length(2, 150)
+				.WithMessage("O nome do evento deve ter entre 2 e 150 caracteres.");
 		}
 
 		private void ValidarValor()
@@ -91,19 +97,19 @@ namespace Eventos.IO.Domain.Models
 			if (Gratuito)
 			{
 				RuleFor(e => e.Valor)
-					.ExclusiveBetween(0, 0).When(e => e.Gratuito)
-					.WithMessage("O valor deve não deve ser preenchido quando o evento é gratuito");
+					.GreaterThanOrEqualTo(0)
+					.WithMessage("O valor não deve ser preenchido quando o evento é gratuito");
 			}
 		}
 
 		private void ValidarData()
 		{
-			RuleFor(e => e.DataInicio)
-				.GreaterThan(e => e.DataFim)
-				.WithMessage("A data de inicio deve ser maior que a data final do evento");
+			RuleFor(e => e.DataFim)
+				.GreaterThan(e => e.DataInicio)
+				.WithMessage("A data final deve ser maior que a data inicial do evento");
 
 			RuleFor(e => e.DataInicio)
-				.LessThan(DateTime.Now)
+				.GreaterThanOrEqualTo(DateTime.Now)
 				.WithMessage("A data de inicio não deve ser maior que a data atual");
 		}
 
@@ -131,7 +137,32 @@ namespace Eventos.IO.Domain.Models
 				.Length(2, 150).WithMessage("O nome do Organizador deve ter entre 2 e 150 caracteres");
 		}
 
-
 		#endregion
+
+		public static class EventoFactory
+		{
+			public static Evento NovoEventoCompleto(Guid id, string nome, string descCurta, string descLonga, DateTime dataInicio, 
+				DateTime dataFim, bool gratuito, decimal valor, bool online, string nomeEmpresa, Guid? organizadorId)
+			{
+				var evento = new Evento()
+				{
+					Id = id,
+					Nome = nome,
+					DescricaoCurta = descCurta,
+					DescricaoLonga = descLonga,
+					DataInicio = dataInicio,
+					DataFim = dataFim,
+					Gratuito = gratuito,
+					Valor = valor,
+					Online = online,
+					NomeEmpresa = nomeEmpresa
+				};
+
+				if(organizadorId != null)
+					evento.Organizador = new Organizador(organizadorId.Value);
+
+				return evento;
+			}
+		}
 	}
 }
