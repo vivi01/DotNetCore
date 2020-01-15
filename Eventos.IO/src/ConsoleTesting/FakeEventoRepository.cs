@@ -18,27 +18,27 @@ namespace ConsoleTesting
 			//
 		}
 
-		public Evento GetById(Guid id)
+		public Evento ObterPorId(Guid id)
 		{
 			return new Evento("Fake", DateTime.Now, DateTime.Now, true, 0, true, "Empresa");
 		}
 
-		public IEnumerable<Evento> GetAll()
+		public IEnumerable<Evento> ObterTodos()
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Update(Evento obj)
+		public void Atualizar(Evento obj)
 		{
 			//
 		}
 
-		public void Remove(Guid id)
+		public void Remover(Guid id)
 		{
 			//
 		}
 
-		public IEnumerable<Evento> Find(Expression<Func<Evento, bool>> predicate)
+		public IEnumerable<Evento> Buscar(Expression<Func<Evento, bool>> predicate)
 		{
 			throw new NotImplementedException();
 		}

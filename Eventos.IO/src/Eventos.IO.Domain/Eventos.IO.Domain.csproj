@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -10,10 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eventos.IO.Domain.Core\Eventos.IO.Domain.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Eventos\CommandHandlers\" />
   </ItemGroup>
 
 </Project>

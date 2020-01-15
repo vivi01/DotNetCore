@@ -29,7 +29,9 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
 		public void Handle(RegistrarEventoCommand message)
 		{
-			Evento evento = new Evento(message.Nome, message.DataInicio, message.DataFim, message.Gratuito, message.Valor, message.Online, message.NomeEmpresa);
+			var evento = Evento.EventoFactory.NovoEventoCompleto(message.Id, message.Nome, message.DescricaoCurta,
+				message.DescricaoLonga, message.DataInicio, message.DataFim, message.Gratuito, message.Valor, message.Online, 
+				message.NomeEmpresa, message.OrganizadorId, message.Endereco, message.Categoria.Id);
 
 			if (!EventoValido(evento))
 			{
@@ -40,7 +42,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
 
 			//Persistência
-			_eventoRepository.Add(evento);
+			_eventoRepository.Adicionar(evento);
 
 			if (Commit())
 			{
@@ -51,21 +53,22 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
 		public void Handle(AtualizarEventoCommand message)
 		{
-			if (!EventoExistente(message.Id, message.MessageType))
-			{
-				return;
-			}
+			var eventoAtual = _eventoRepository.ObterPorId(message.Id);
 
-			Evento evento = Evento.EventoFactory.NovoEventoCompleto(message.Id, message.Nome,
-				message.DescricaoCurta, message.DescricaoLonga, message.DataInicio, message.DataFim,
-				message.Gratuito, message.Valor, message.Online, message.NomeEmpresa, null);
+			if (!EventoExistente(message.Id, message.MessageType)) return;
+
+			//TODO: Validar se o evento pertence a pessoa que esta editando
+
+			var evento = Evento.EventoFactory.NovoEventoCompleto(message.Id, message.Nome, message.DescricaoCurta,
+				message.DescricaoLonga, message.DataInicio, message.DataFim, message.Gratuito, message.Valor, message.Online,
+				message.NomeEmpresa, message.OrganizadorId, eventoAtual.Endereco, message.Categoria.Id);
 
 			if (!EventoValido(evento))
 			{
 				return;
 			}
 
-			_eventoRepository.Update(evento);
+			_eventoRepository.Atualizar(evento);
 
 			if (Commit())
 			{
@@ -82,7 +85,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 				return;
 			}
 
-			_eventoRepository.Remove(message.Id);
+			_eventoRepository.Remover(message.Id);
 
 			if (Commit())
 			{
@@ -103,7 +106,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
 		private bool EventoExistente(Guid id, string messageType)
 		{
-			Evento evento = _eventoRepository.GetById(id);
+			Evento evento = _eventoRepository.ObterPorId(id);
 
 			if (evento != null)
 			{
