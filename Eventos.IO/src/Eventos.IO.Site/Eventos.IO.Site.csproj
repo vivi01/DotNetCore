@@ -2,12 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-Eventos.IO.Site-0281B10A-4310-41BF-9DED-F1E72E8EB9BF</UserSecretsId>
+    <UserSecretsId>aspnet-Eventos.IO.Site-0A1ED17B-7FAD-41EF-BB5C-1000414AB9B4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Eventos.IO.Application\Eventos.IO.Application.csproj" />
   </ItemGroup>
 
 </Project>
