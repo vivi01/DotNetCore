@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Eventos.IO.Infra.CrossCutting.Bus;
+using Eventos.IO.Infra.CrossCutting.IoC;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -36,10 +38,13 @@ namespace Eventos.IO.Site
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+			//Add application services
+			RegisterServices(services);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor accessor)
 		{
 			if (env.IsDevelopment())
 			{
@@ -64,6 +69,13 @@ namespace Eventos.IO.Site
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}");
 			});
+
+			InMemoryBus.ContainerAccessor = () => accessor.HttpContext.RequestServices;
+		}
+
+		private static void RegisterServices(IServiceCollection services)
+		{
+			NativeInjectorBootStrapper.RegisterServices(services);
 		}
 	}
 }
