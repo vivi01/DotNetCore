@@ -33,6 +33,8 @@ namespace Eventos.IO.Application.ViewModels
 
 		public string Estado { get; set; }
 
+		public Guid EventoId { get; set; }
+
 		public override string ToString()
 		{
 			return Logradouro + ", " + Numero + " - " + Bairro + ", " + Cidade + " - " + Estado;

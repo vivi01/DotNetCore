@@ -12,7 +12,7 @@ namespace Eventos.IO.Application.ViewModels
 
 		public string Nome { get; set; }
 
-		public SelectList Estados()
+		public SelectList Categorias()
 		{
 			return new SelectList(ListarCategorias(), "Id", "Nome");
 		}

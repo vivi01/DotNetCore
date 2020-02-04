@@ -47,7 +47,6 @@ namespace Eventos.IO.Infra.CrossCutting.IoC
 
 			//Infra - Bus
 			services.AddScoped<IBus, InMemoryBus>();
-
 		}
 	}
 }

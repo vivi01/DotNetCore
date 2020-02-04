@@ -1,4 +1,7 @@
-﻿using Eventos.IO.Infra.CrossCutting.Bus;
+﻿using System.Reflection;
+using AutoMapper;
+using Eventos.IO.Application.AutoMapper;
+using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.CrossCutting.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -38,6 +41,9 @@ namespace Eventos.IO.Site
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperConfiguration)));
+
+
 
 			//Add application services
 			RegisterServices(services);
