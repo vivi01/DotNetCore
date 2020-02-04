@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dapper;
 using Eventos.IO.Domain.Eventos;
 using Eventos.IO.Domain.Eventos.Repository;
 using Eventos.IO.Infra.Data.Context;
@@ -13,6 +14,15 @@ namespace Eventos.IO.Infra.Data.Repository
 		public EventoRepository(EventosContext context) : base(context)
 		{
 
+		}
+
+		public override IEnumerable<Evento> ObterTodos()
+		{
+			var sql = "SELECT * FROM EVENTOS E " +
+			               "WHERE E.EXCLUIDO = 0 " + 
+				           "ORDER BY E.DATAFIM DESC ";
+
+			return Db.Database.GetDbConnection().Query<Evento>(sql);
 		}
 
 		public void AdicionarEndereco(Endereco endereco)
@@ -37,9 +47,20 @@ namespace Eventos.IO.Infra.Data.Repository
 
 		public override Evento ObterPorId(Guid id)
 		{
-			return Db.Eventos
-				.Include(e => e.Endereco)
-				.FirstOrDefault(e => e.Id == id);
+			var sql = "SELECT * FROM Eventos E " +
+			               "LEFT JOIN Enderecos END " +
+			               "ON E.Id = END.Id " +
+			               "WHERE E.Id = @uid";
+			var evento = Db.Database.GetDbConnection().Query<Evento, Endereco, Evento>(sql,
+				(e, end) =>
+				{
+					if(end != null)
+						e.AtribuirEndereco(end);
+
+					return e;
+				}, new { uid = id});
+
+			return evento.FirstOrDefault();
 		}
 	}
 }

@@ -1,13 +1,12 @@
-﻿@using Eventos.IO.Application.ViewModels
-@model Eventos.IO.Application.ViewModels.EventoViewModel
+﻿@model Eventos.IO.Application.ViewModels.EventoViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Registrar Novo Evento";
 }
 
-<h2>Create</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h4>EventoViewModel</h4>
+<h4>Preencha todos os dados corretamente</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -79,15 +78,12 @@
                 <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
             </div>
 
-           <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default"/>
+            <div class="form-group">
+                <input type="submit" value="Registrar" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-info">Voltar para a Lista</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
