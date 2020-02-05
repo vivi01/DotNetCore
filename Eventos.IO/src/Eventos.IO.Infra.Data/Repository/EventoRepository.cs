@@ -37,25 +37,35 @@ namespace Eventos.IO.Infra.Data.Repository
 
 		public Endereco ObterEnderecoPorId(Guid enderecoId)
 		{
-			return Db.Enderecos.Find(enderecoId);
+			var sql = "SELECT * FROM Enderecos E " +
+			          "WHERE E.ID = @uid";
+			var endereco = Db.Database.GetDbConnection().Query<Endereco>(sql,
+				new { uid = enderecoId });
+
+			return endereco.SingleOrDefault();
 		}
 
 		public IEnumerable<Evento> ObterEventoPorOrganizador(Guid organizadorId)
 		{
-			return Db.Eventos.Where(e => e.OrganizadorId == organizadorId);
+			var sql = "SELECT * FROM Eventos E " +
+				            "WHERE E.EXCLUIDO = 0 " +
+				            "AND E.ORGANIZADORID = @oid " +
+				            "ORDER BY E.DATAFIM DESC";
+
+			return Db.Database.GetDbConnection().Query<Evento>(sql, new { oid = organizadorId });
 		}
 
 		public override Evento ObterPorId(Guid id)
 		{
 			var sql = "SELECT * FROM Eventos E " +
-			               "LEFT JOIN Enderecos END " +
-			               "ON E.Id = END.Id " +
+			               "LEFT JOIN Enderecos EN " +
+			               "ON E.Id = EN.Id " +
 			               "WHERE E.Id = @uid";
 			var evento = Db.Database.GetDbConnection().Query<Evento, Endereco, Evento>(sql,
-				(e, end) =>
+				(e, en) =>
 				{
-					if(end != null)
-						e.AtribuirEndereco(end);
+					if(en != null)
+						e.AtribuirEndereco(en);
 
 					return e;
 				}, new { uid = id});

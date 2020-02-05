@@ -12,17 +12,17 @@
     <div class="col-md-4">
         <form asp-action="Create">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <vc:summary></vc:summary>
 
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control"/>
+                <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="DescricaoCurta" class="control-label"></label>
-                <input asp-for="DescricaoCurta" class="form-control"/>
+                <input asp-for="DescricaoCurta" class="form-control" />
                 <span asp-validation-for="DescricaoCurta" class="text-danger"></span>
             </div>
 
@@ -31,50 +31,50 @@
                 <textarea rows="5" asp-for="DescricaoLonga" class="form-control"></textarea>
                 <span asp-validation-for="DescricaoLonga" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
-                  @Html.Partial("_Categorias")
+                @Html.Partial("_Categorias")
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="DataInicio" class="control-label"></label>
-                <input asp-for="DataInicio" class="form-control"/>
+                <input asp-for="DataInicio" class="form-control" />
                 <span asp-validation-for="DataInicio" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="DataFim" class="control-label"></label>
-                <input asp-for="DataFim" class="form-control"/>
+                <input asp-for="DataFim" class="form-control" />
                 <span asp-validation-for="DataFim" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="Gratuito"/> @Html.DisplayNameFor(model => model.Gratuito)
+                        <input asp-for="Gratuito" /> @Html.DisplayNameFor(model => model.Gratuito)
                     </label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control"/>
+                <input asp-for="Valor" class="form-control" />
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="Online"/> @Html.DisplayNameFor(model => model.Online)
+                        <input asp-for="Online" /> @Html.DisplayNameFor(model => model.Online)
                     </label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label asp-for="NomeEmpresa" class="control-label"></label>
-                <input asp-for="NomeEmpresa" class="form-control"/>
+                <input asp-for="NomeEmpresa" class="form-control" />
                 <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
             </div>
 
@@ -88,4 +88,33 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        if (ViewBag.RetornoPost != null)
+        {
+            var notificacao = ViewBag.RetornoPost.ToString().Split(',');
+            
+            <script>
+                toastr.options = {
+                "closeButton": false,
+                    "debug": true,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+            toastr["@notificacao[0]"]("@notificacao[1]");
+            </script>
+        }
+    }
 }
