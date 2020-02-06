@@ -6,12 +6,14 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" rel="stylesheet">
+
 <h4>Edite os dados que deseja alterar</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            
+
             <vc:summary></vc:summary>
 
             <input type="hidden" asp-for="Id" />
@@ -34,12 +36,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="DataInicio" class="control-label"></label>
-                <input asp-for="DataInicio" class="form-control" />
+                <input asp-for="DataInicio" type="text" asp-format="{0:dd/MM/yyyy}" class="form-control" />
                 <span asp-validation-for="DataInicio" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DataFim" class="control-label"></label>
-                <input asp-for="DataFim" class="form-control" />
+                <input asp-for="DataFim" type="text" asp-format="{0:dd/MM/yyyy}" class="form-control" />
                 <span asp-validation-for="DataFim" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -66,7 +68,7 @@
                 <input asp-for="NomeEmpresa" class="form-control" />
                 <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-success" />
                 <a asp-action="Index" class="btn btn-info">Voltar para a Lista</a>
@@ -78,11 +80,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt.min.js"></script>
+
+    <script>
+        ValidacoesEvento();
+    </script>
+
     @{
         if (ViewBag.RetornoPost != null)
         {
             var notificacao = ViewBag.RetornoPost.ToString().Split(',');
-            
+
             <script>
                 toastr.options = {
                     "closeButton": false,

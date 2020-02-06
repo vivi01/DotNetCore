@@ -6,6 +6,8 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" rel="stylesheet">
+
 <h4>Preencha todos os dados corretamente</h4>
 <hr />
 <div class="row">
@@ -40,13 +42,13 @@
 
             <div class="form-group">
                 <label asp-for="DataInicio" class="control-label"></label>
-                <input asp-for="DataInicio" class="form-control" />
+                <input asp-for="DataInicio" type="text" class="form-control" />
                 <span asp-validation-for="DataInicio" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="DataFim" class="control-label"></label>
-                <input asp-for="DataFim" class="form-control" />
+                <input asp-for="DataFim" type="text" class="form-control" />
                 <span asp-validation-for="DataFim" class="text-danger"></span>
             </div>
 
@@ -60,7 +62,7 @@
 
             <div class="form-group">
                 <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control" />
+                <input data-val-number="O Valor está em Formato Inválido" asp-for="Valor" class="form-control" />
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
 
@@ -89,14 +91,22 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt.min.js"></script>
+
+    <script>
+        ValidacoesEvento();
+    </script>
+
     @{
         if (ViewBag.RetornoPost != null)
         {
             var notificacao = ViewBag.RetornoPost.ToString().Split(',');
-            
+
             <script>
                 toastr.options = {
-                "closeButton": false,
+                    "closeButton": false,
                     "debug": true,
                     "newestOnTop": false,
                     "progressBar": true,
@@ -113,7 +123,7 @@
                     "hideMethod": "fadeOut"
                 }
 
-            toastr["@notificacao[0]"]("@notificacao[1]");
+                toastr["@notificacao[0]"]("@notificacao[1]");
             </script>
         }
     }
