@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using Eventos.IO.Application.AutoMapper;
+using Eventos.IO.Domain.Interfaces;
 using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.CrossCutting.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Eventos.IO.Site.Data;
+using Eventos.IO.Site.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,7 +45,7 @@ namespace Eventos.IO.Site
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperConfiguration)));
 
-
+			services.AddScoped<IUser, AspNetUser>();
 
 			//Add application services
 			RegisterServices(services);
