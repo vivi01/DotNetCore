@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Eventos.IO.Application.ViewModels;
 
 namespace Eventos.IO.Site.Data
 {
@@ -9,5 +10,6 @@ namespace Eventos.IO.Site.Data
 			: base(options)
 		{
 		}
+		public DbSet<Eventos.IO.Application.ViewModels.EnderecoViewModel> EnderecoViewModel { get; set; }
 	}
 }

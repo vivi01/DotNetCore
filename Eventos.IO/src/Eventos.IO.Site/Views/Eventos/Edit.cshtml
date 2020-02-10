@@ -69,6 +69,11 @@
                 <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
             </div>
 
+            <div id="EnderecoForm">
+                <hr />
+                <h3>Endereço do Evento</h3>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-success" />
                 <a asp-action="Index" class="btn btn-info">Voltar para a Lista</a>
@@ -79,7 +84,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt.min.js"></script>
@@ -94,25 +99,7 @@
             var notificacao = ViewBag.RetornoPost.ToString().Split(',');
 
             <script>
-                toastr.options = {
-                    "closeButton": false,
-                    "debug": true,
-                    "newestOnTop": false,
-                    "progressBar": true,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": true,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
-
-                toastr["@notificacao[0]"]("@notificacao[1]");
+               toastr["@notificacao[0]"]("@notificacao[1]");
             </script>
         }
     }
