@@ -71,6 +71,7 @@ namespace Eventos.IO.Site.Controllers
 			}
 
 			var eventoViewModel = _eventoAppService.ObterPorId(id.Value);
+			
 			if (eventoViewModel == null)
 			{
 				return NotFound();
@@ -119,6 +120,30 @@ namespace Eventos.IO.Site.Controllers
 			_eventoAppService.Excluir(id);
 
 			return RedirectToAction("Index");
+		}
+
+		public IActionResult IncluirEndereco(Guid? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var eventoViewModel = _eventoAppService.ObterPorId(id.Value);
+
+			return PartialView("_IncluirEndereco", eventoViewModel);
+		}
+
+		public IActionResult AtualizarEndereco(Guid? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var eventoViewModel = _eventoAppService.ObterPorId(id.Value);
+
+			return PartialView("_AtualizarEndereco", eventoViewModel);
 		}
 	}
 }

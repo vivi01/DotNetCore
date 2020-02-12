@@ -59,7 +59,7 @@ namespace Eventos.IO.Infra.Data.Repository
 		{
 			var sql = "SELECT * FROM Eventos E " +
 			               "LEFT JOIN Enderecos EN " +
-			               "ON E.Id = EN.Id " +
+						   "ON E.Id = EN.EventoId " +
 			               "WHERE E.Id = @uid";
 			var evento = Db.Database.GetDbConnection().Query<Evento, Endereco, Evento>(sql,
 				(e, en) =>

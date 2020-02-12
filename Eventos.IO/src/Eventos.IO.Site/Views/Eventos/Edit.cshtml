@@ -68,17 +68,25 @@
                 <input asp-for="NomeEmpresa" class="form-control" />
                 <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
             </div>
-
-            <div id="EnderecoForm">
-                <hr />
-                <h3>Endereço do Evento</h3>
-            </div>
-
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-success" />
                 <a asp-action="Index" class="btn btn-info">Voltar para a Lista</a>
             </div>
         </form>
+    </div>
+</div>
+
+<div id="EnderecoForm">
+    <div id="EnderecoTarget">
+        @Html.Partial("_DetalhesEndereco")
+    </div>
+</div>
+
+<div id="myModal" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+        </div>
     </div>
 </div>
 
@@ -91,6 +99,7 @@
 
     <script>
         ValidacoesEvento();
+        AjaxModal();
     </script>
 
     @{
