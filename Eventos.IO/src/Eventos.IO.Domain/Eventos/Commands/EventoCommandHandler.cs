@@ -18,15 +18,17 @@ namespace Eventos.IO.Domain.Eventos.Commands
 	{
 		private readonly IEventoRepository _eventoRepository;
 		private readonly IBus _bus;
-
+		private readonly IUser _user;
 
 		public EventoCommandHandler(IEventoRepository eventoRepository,
 			IUnitOfWork uow,
 			IBus bus,
-			IDomainNotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
+			IDomainNotificationHandler<DomainNotification> notifications,
+			IUser user) : base(uow, bus, notifications)
 		{
 			_eventoRepository = eventoRepository;
 			_bus = bus;
+			_user = user;
 		}
 
 		public void Handle(RegistrarEventoCommand message)
@@ -64,7 +66,11 @@ namespace Eventos.IO.Domain.Eventos.Commands
 				return;
 			}
 
-			//TODO: Validar se o evento pertence a pessoa que esta editando
+			if(eventoAtual.OrganizadorId != _user.GetUserId())
+			{
+				_bus.RaiseEvent(new DomainNotification(message.MessageType, "Evento não Pertence ao Organizador"));
+				return;
+			}
 
 			Evento evento = Evento.EventoFactory.NovoEventoCompleto(message.Id, message.Nome, message.DescricaoCurta,
 				message.DescricaoLonga, message.DataInicio, message.DataFim, message.Gratuito, message.Valor, message.Online,
@@ -98,7 +104,12 @@ namespace Eventos.IO.Domain.Eventos.Commands
 				return;
 			}
 
-			_eventoRepository.Remover(message.Id);
+			var eventoAtual = _eventoRepository.ObterPorId(message.Id);
+
+			//Validações de Negócio
+			eventoAtual.ExcluirEvento();
+
+			_eventoRepository.Atualizar(eventoAtual);
 
 			if (Commit())
 			{
