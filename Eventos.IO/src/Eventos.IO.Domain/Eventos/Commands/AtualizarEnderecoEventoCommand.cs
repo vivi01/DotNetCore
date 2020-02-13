@@ -3,9 +3,9 @@ using Eventos.IO.Domain.Core.Commands;
 
 namespace Eventos.IO.Domain.Eventos.Commands
 {
-	public class IncluirEnderecoEventoCommand : Command
+	public class AtualizarEnderecoEventoCommand : Command
 	{
-		public IncluirEnderecoEventoCommand(Guid id, string logradouro, string numero,
+		public AtualizarEnderecoEventoCommand(Guid id, string logradouro, string numero,
 			string complemento, string bairro, string cep, string cidade, string estado, Guid? eventoId)
 		{
 			Id = id;
