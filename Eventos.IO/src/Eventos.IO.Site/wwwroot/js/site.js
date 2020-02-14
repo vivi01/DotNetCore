@@ -25,7 +25,7 @@
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
-    }
+    } 
 
     $('#DataInicio').datepicker({
         format: "dd/mm/yyyy",

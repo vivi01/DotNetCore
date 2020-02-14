@@ -122,7 +122,7 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Registrar" class="btn btn-success" />
+                <input id="btSubmit" type="submit" value="Registrar" class="btn btn-success" />
                 <a asp-action="MeusEventos" class="btn btn-info">Voltar para a Lista</a>
             </div>
         </form>
@@ -148,6 +148,13 @@
             <script>
                 toastr["@notificacao[0]"]("@notificacao[1]");
             </script>
+
+            if (@notificacao[0] == "success")
+            {
+                <script>
+                    $("#btSubmit").prop("disabled", true);
+                </script>
+            }
         }
     }
 }
