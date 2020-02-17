@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Eventos.IO.Infra.CrossCutting.AspNetFilters\Eventos.IO.Infra.CrossCutting.AspNetFilters.csproj" />
     <ProjectReference Include="..\Eventos.IO.Application\Eventos.IO.Application.csproj" />
     <ProjectReference Include="..\Eventos.IO.Domain\Eventos.IO.Domain.csproj" />
     <ProjectReference Include="..\Eventos.IO.Infra.CrossCutting.Bus\Eventos.IO.Infra.CrossCutting.Bus.csproj" />
@@ -32,6 +33,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Eventos\_Estados.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\NotFound.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

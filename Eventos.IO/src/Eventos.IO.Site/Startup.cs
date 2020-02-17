@@ -14,6 +14,7 @@ using Eventos.IO.Site.Data;
 using Eventos.IO.Site.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Eventos.IO.Infra.CrossCutting.AspNetFilters;
 
 namespace Eventos.IO.Site
 {
@@ -49,7 +50,11 @@ namespace Eventos.IO.Site
 
 			});
 
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(new ServiceFilterAttribute(typeof(GlobalExceptionHandlingFilter)));
+			}).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
 			services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperConfiguration)));
 
 			services.AddScoped<IUser, AspNetUser>();
@@ -68,7 +73,8 @@ namespace Eventos.IO.Site
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/erro-de-aplicacao");
+				app.UseStatusCodePagesWithReExecute("/erro-de-aplicacao/{0}");
 				app.UseHsts();
 			}
 
