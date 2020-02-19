@@ -15,6 +15,7 @@ using Eventos.IO.Site.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Eventos.IO.Infra.CrossCutting.AspNetFilters;
+using Microsoft.Extensions.Logging;
 
 namespace Eventos.IO.Site
 {
@@ -64,8 +65,12 @@ namespace Eventos.IO.Site
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor accessor)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+			IHttpContextAccessor accessor,  ILoggerFactory loggerFactory)
 		{
+			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+			loggerFactory.AddDebug();
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
