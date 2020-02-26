@@ -1,5 +1,7 @@
-﻿using Eventos.IO.Domain.Core.Notifications;
+﻿using Eventos.IO.Domain.Core.Bus;
+using Eventos.IO.Domain.Core.Notifications;
 using Eventos.IO.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -10,13 +12,15 @@ namespace Eventos.IO.Services.Api.Controllers
 	public abstract class BaseController : ControllerBase
 	{
 		private readonly IDomainNotificationHandler<DomainNotification> _notifications;
+		private readonly IBus _bus;
 
 		protected Guid OrganizadorId { get; set; }
 
 		public BaseController(IDomainNotificationHandler<DomainNotification> notifications,
-			IUser user)
+			IUser user, IBus bus)
 		{
 			_notifications = notifications;
+			_bus = bus;
 
 			if (user.IsAuthenticated())
 			{
@@ -44,6 +48,29 @@ namespace Eventos.IO.Services.Api.Controllers
 		protected bool OperacaoValida()
 		{
 			return (!_notifications.HasNotifications());
+		}
+
+		protected void NotificarErroModelInvalida()
+		{
+			var erros = ModelState.Values.SelectMany(e => e.Errors);
+
+			foreach (var erro in erros)
+			{
+				NotificarErro(string.Empty, erro.ErrorMessage);
+			}
+		}
+
+		protected void NotificarErro(string codigo, string mensagem)
+		{
+			_bus.RaiseEvent(new DomainNotification(codigo, mensagem));
+		}
+
+		protected void AdicionarErrosIdentity(IdentityResult result)
+		{
+			foreach (IdentityError error in result.Errors)
+			{
+				NotificarErro(result.ToString(), error.Description);
+			}
 		}
 	}
 }
